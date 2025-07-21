@@ -112,7 +112,12 @@
 
 
 
-- [ ] 5.2 Update authentication templates (login, register)
+- [x] 5.2 Update authentication templates (login, register)
+
+
+
+
+
   - Replace hardcoded strings in login.html and register.html
   - Update form labels, buttons, and validation messages
   - Ensure error messages display in user's preferred language
@@ -120,7 +125,12 @@
 
   - _Requirements: 1.1, 1.3_
 
-- [ ] 5.3 Update game-specific templates (farm, dashboard, profile)
+- [x] 5.3 Update game-specific templates (farm, dashboard, profile)
+
+
+
+
+
   - Replace hardcoded strings in farm.html, dashboard.html, and profile.html
 
 
@@ -128,14 +138,26 @@
   - Add language preference selection to profile template
   - _Requirements: 1.1, 1.3, 4.1_
 
-- [ ] 5.4 Update admin template with translations
+- [x] 5.4 Update admin template with translations
+
+
+
+
+
   - Replace hardcoded strings in admin.html template
   - Update admin-specific terminology and action labels
   - Ensure admin interface respects language preferences
   - _Requirements: 1.1, 1.3_
 
-- [ ] 6. Create initial translation files
+- [-] 6. Create initial translation files
+
+
+
 - [ ] 6.1 Extract translatable strings and create message catalog
+
+
+
+
   - Run pybabel extract to create messages.pot template file
   - Review extracted strings for completeness and accuracy
   - Clean up and organize translation keys for maintainability

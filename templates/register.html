@@ -9,18 +9,79 @@
 <form method="POST">
     <div class="form-group">
         <label for="username">🧑‍🌾 {{ _('Farmer Name') }}:</label>
-        <input type="text" id="username" name="username" required minlength="3" maxlength="20">
+        <input type="text" id="username" name="username" required minlength="3" maxlength="20"
+               title="{{ _('Please enter a farmer name between 3 and 20 characters') }}"
+               placeholder="{{ _('Choose your farmer name') }}">
     </div>
     <div class="form-group">
         <label for="email">📧 {{ _('Email') }}:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" required
+               title="{{ _('Please enter a valid email address') }}"
+               placeholder="{{ _('Enter your email address') }}">
     </div>
     <div class="form-group">
         <label for="password">🔒 {{ _('Password') }}:</label>
-        <input type="password" id="password" name="password" required minlength="6">
+        <input type="password" id="password" name="password" required minlength="6"
+               title="{{ _('Please enter a password with at least 6 characters') }}"
+               placeholder="{{ _('Create a secure password') }}">
     </div>
     <button type="submit">🌱 {{ _('Start Farming') }}</button>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    
+    // Custom validation messages
+    usernameInput.addEventListener('invalid', function() {
+        if (this.validity.valueMissing) {
+            this.setCustomValidity('{{ _("Please enter a farmer name") }}');
+        } else if (this.validity.tooShort) {
+            this.setCustomValidity('{{ _("Farmer name must be at least 3 characters long") }}');
+        } else if (this.validity.tooLong) {
+            this.setCustomValidity('{{ _("Farmer name must be no more than 20 characters long") }}');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+    
+    emailInput.addEventListener('invalid', function() {
+        if (this.validity.valueMissing) {
+            this.setCustomValidity('{{ _("Please enter your email address") }}');
+        } else if (this.validity.typeMismatch) {
+            this.setCustomValidity('{{ _("Please enter a valid email address") }}');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+    
+    passwordInput.addEventListener('invalid', function() {
+        if (this.validity.valueMissing) {
+            this.setCustomValidity('{{ _("Please enter a password") }}');
+        } else if (this.validity.tooShort) {
+            this.setCustomValidity('{{ _("Password must be at least 6 characters long") }}');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+    
+    // Clear custom validity on input
+    usernameInput.addEventListener('input', function() {
+        this.setCustomValidity('');
+    });
+    
+    emailInput.addEventListener('input', function() {
+        this.setCustomValidity('');
+    });
+    
+    passwordInput.addEventListener('input', function() {
+        this.setCustomValidity('');
+    });
+});
+</script>
 
 <p style="margin-top: 20px;">
     {{ _('Already have a farm?') }} <a href="{{ url_for('login') }}" style="color: #4caf50; font-weight: bold;">{{

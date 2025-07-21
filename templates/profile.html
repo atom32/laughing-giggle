@@ -40,7 +40,7 @@
         <div style="margin: 15px 0; display: flex; justify-content: space-between; align-items: center;">
             <span><strong>🌐 {{ _('Language Preference') }}:</strong></span>
             <form method="POST" style="margin: 0;">
-                <select name="language" onchange="this.form.submit()" style="padding: 4px 8px; border: 1px solid #c8e6c9; border-radius: 4px; background-color: white; color: #2e7d32;">
+                <select name="preferred_language" onchange="this.form.submit()" style="padding: 4px 8px; border: 1px solid #c8e6c9; border-radius: 4px; background-color: white; color: #2e7d32;">
                     {% for code, name in get_available_languages().items() %}
                         <option value="{{ code }}" {% if user.preferred_language == code %}selected{% endif %}>
                             {{ name }}
