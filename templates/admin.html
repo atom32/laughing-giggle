@@ -1,33 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Farm Admin Panel - Farm Manager{% endblock %}
+{% block title %}{{ _('Farm Admin Panel') }} - {{ _('Farm Manager') }}{% endblock %}
 
 {% block content %}
-<div class="nav">
-    <a href="{{ url_for('home') }}">🏠 Dashboard</a>
-    <a href="{{ url_for('profile') }}">👤 Profile</a>
-    <a href="{{ url_for('logout') }}">🚪 Logout</a>
-</div>
-
-<h2>⚙️ Farm Administration</h2>
-<p>Manage farmers and oversee the farming community</p>
+<h2>⚙️ {{ _('Farm Administration') }}</h2>
+<p>{{ _('Manage farmers and oversee the farming community') }}</p>
 
 <div style="margin-top: 30px;">
-    <h3>👥 Farmer Management</h3>
+    <h3>👥 {{ _('Farmer Management') }}</h3>
     <div style="overflow-x: auto;">
         <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);">
             <thead>
                 <tr style="background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%); color: white;">
-                    <th style="padding: 12px; text-align: left;">ID</th>
-                    <th style="padding: 12px; text-align: left;">🧑‍🌾 Farmer</th>
-                    <th style="padding: 12px; text-align: left;">📧 Email</th>
-                    <th style="padding: 12px; text-align: left;">Status</th>
-                    <th style="padding: 12px; text-align: left;">Role</th>
-                    <th style="padding: 12px; text-align: left;">Resources</th>
-                    <th style="padding: 12px; text-align: left;">Level</th>
-                    <th style="padding: 12px; text-align: left;">Joined</th>
-                    <th style="padding: 12px; text-align: left;">Last Visit</th>
-                    <th style="padding: 12px; text-align: left;">Actions</th>
+                    <th style="padding: 12px; text-align: left;">{{ _('ID') }}</th>
+                    <th style="padding: 12px; text-align: left;">🧑‍🌾 {{ _('Farmer') }}</th>
+                    <th style="padding: 12px; text-align: left;">📧 {{ _('Email') }}</th>
+                    <th style="padding: 12px; text-align: left;">{{ _('Status') }}</th>
+                    <th style="padding: 12px; text-align: left;">{{ _('Role') }}</th>
+                    <th style="padding: 12px; text-align: left;">{{ _('Resources') }}</th>
+                    <th style="padding: 12px; text-align: left;">{{ _('Level') }}</th>
+                    <th style="padding: 12px; text-align: left;">{{ _('Joined') }}</th>
+                    <th style="padding: 12px; text-align: left;">{{ _('Last Visit') }}</th>
+                    <th style="padding: 12px; text-align: left;">{{ _('Actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,16 +35,16 @@
                     <td style="padding: 12px; color: #666;">{{ user.email }}</td>
                     <td style="padding: 12px;">
                         {% if user.is_active %}
-                            <span style="color: #4caf50; font-weight: bold;">✅ Active</span>
+                            <span style="color: #4caf50; font-weight: bold;">✅ {{ _('Active') }}</span>
                         {% else %}
-                            <span style="color: #f44336; font-weight: bold;">❌ Disabled</span>
+                            <span style="color: #f44336; font-weight: bold;">❌ {{ _('Disabled') }}</span>
                         {% endif %}
                     </td>
                     <td style="padding: 12px;">
                         {% if user.is_admin %}
-                            <span style="color: #ff9800; font-weight: bold;">👑 Admin</span>
+                            <span style="color: #ff9800; font-weight: bold;">👑 {{ _('Admin') }}</span>
                         {% else %}
-                            <span style="color: #666;">🧑‍🌾 Farmer</span>
+                            <span style="color: #666;">🧑‍🌾 {{ _('Farmer') }}</span>
                         {% endif %}
                     </td>
                     <td style="padding: 12px; font-size: 12px; color: #2e7d32;">
@@ -60,7 +54,7 @@
                     </td>
                     <td style="padding: 12px;">
                         <span style="background: #4caf50; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
-                            Lv.{{ user.level }}
+                            {{ _('Lv.%(level)s', level=user.level) }}
                         </span>
                     </td>
                     <td style="padding: 12px; color: #666;">{{ user.created_at.strftime('%Y-%m-%d') }}</td>
@@ -68,19 +62,19 @@
                         {% if user.last_login %}
                             {{ user.last_login.strftime('%m-%d %H:%M') }}
                         {% else %}
-                            Never
+                            {{ _('Never') }}
                         {% endif %}
                     </td>
                     <td style="padding: 12px;">
                         <div style="display: flex; gap: 5px; flex-wrap: wrap;">
                             <a href="{{ url_for('toggle_user_status', user_id=user.id) }}" 
                                style="padding: 4px 8px; background-color: {% if user.is_active %}#f44336{% else %}#4caf50{% endif %}; color: white; text-decoration: none; border-radius: 3px; font-size: 12px; font-weight: bold;">
-                                {% if user.is_active %}Disable{% else %}Enable{% endif %}
+                                {% if user.is_active %}{{ _('Disable') }}{% else %}{{ _('Enable') }}{% endif %}
                             </a>
                             {% if not user.is_admin %}
                             <a href="{{ url_for('make_admin', user_id=user.id) }}" 
                                style="padding: 4px 8px; background-color: #ff9800; color: white; text-decoration: none; border-radius: 3px; font-size: 12px; font-weight: bold;">
-                                Make Admin
+                                {{ _('Make Admin') }}
                             </a>
                             {% endif %}
                         </div>
@@ -94,62 +88,62 @@
 
 <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
     <div class="card" style="background-color: #e8f5e8; border-left: 4px solid #4caf50;">
-        <h4>📊 Community Statistics</h4>
+        <h4>📊 {{ _('Community Statistics') }}</h4>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Total Farmers:</strong></span>
+            <span><strong>{{ _('Total Farmers') }}:</strong></span>
             <span style="color: #2e7d32; font-weight: bold;">{{ users|length }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Active Farmers:</strong></span>
+            <span><strong>{{ _('Active Farmers') }}:</strong></span>
             <span style="color: #2e7d32; font-weight: bold;">{{ users|selectattr('is_active')|list|length }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Farm Admins:</strong></span>
+            <span><strong>{{ _('Farm Admins') }}:</strong></span>
             <span style="color: #2e7d32; font-weight: bold;">{{ users|selectattr('is_admin')|list|length }}</span>
         </div>
     </div>
 
     <div class="card" style="background-color: #fff3e0; border-left: 4px solid #ff9800;">
-        <h4>💰 Resource Overview</h4>
+        <h4>💰 {{ _('Resource Overview') }}</h4>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Total Coins:</strong></span>
+            <span><strong>{{ _('Total Coins') }}:</strong></span>
             <span style="color: #f57c00; font-weight: bold;">{{ "{:,}".format(users|sum(attribute='coins')) }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Total Wheat:</strong></span>
+            <span><strong>{{ _('Total Wheat') }}:</strong></span>
             <span style="color: #f57c00; font-weight: bold;">{{ "{:,}".format(users|sum(attribute='wheat')) }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Total Corn:</strong></span>
+            <span><strong>{{ _('Total Corn') }}:</strong></span>
             <span style="color: #f57c00; font-weight: bold;">{{ "{:,}".format(users|sum(attribute='corn')) }}</span>
         </div>
     </div>
 
     <div class="card" style="background-color: #e3f2fd; border-left: 4px solid #2196f3;">
-        <h4>⚡ Admin Tools</h4>
+        <h4>⚡ {{ _('Admin Tools') }}</h4>
         <div style="margin: 15px 0;">
-            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">📢 Send Community Message</a>
+            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">📢 {{ _('Send Community Message') }}</a>
         </div>
         <div style="margin: 15px 0;">
-            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">🌾 Manage Crop Prices</a>
+            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">🌾 {{ _('Manage Crop Prices') }}</a>
         </div>
         <div style="margin: 15px 0;">
-            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">📈 View Farm Reports</a>
+            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">📈 {{ _('View Farm Reports') }}</a>
         </div>
         <div style="margin: 15px 0;">
-            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">🎁 Send Resources</a>
+            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">🎁 {{ _('Send Resources') }}</a>
         </div>
     </div>
 </div>
 
 <div class="card" style="margin-top: 30px; background-color: #ffebee; border-left: 4px solid #f44336;">
-    <h4>⚠️ Admin Guidelines</h4>
+    <h4>⚠️ {{ _('Admin Guidelines') }}</h4>
     <ul style="color: #c62828; line-height: 1.6;">
-        <li>Use admin powers responsibly to maintain a fair farming community</li>
-        <li>Disabled farmers cannot login but their farm data is preserved</li>
-        <li>Making someone admin gives them full system access</li>
-        <li>Monitor resource distribution to ensure game balance</li>
-        <li>Help new farmers get started and resolve any issues</li>
+        <li>{{ _('Use admin powers responsibly to maintain a fair farming community') }}</li>
+        <li>{{ _('Disabled farmers cannot login but their farm data is preserved') }}</li>
+        <li>{{ _('Making someone admin gives them full system access') }}</li>
+        <li>{{ _('Monitor resource distribution to ensure game balance') }}</li>
+        <li>{{ _('Help new farmers get started and resolve any issues') }}</li>
     </ul>
 </div>
 {% endblock %}

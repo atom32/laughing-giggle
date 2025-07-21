@@ -1,127 +1,130 @@
 {% extends "base.html" %}
 
-{% block title %}Farmer Profile - Farm Manager{% endblock %}
+{% block title %}{{ _('Farmer Profile') }} - {{ _('Farm Manager') }}{% endblock %}
 
 {% block content %}
-<div class="nav">
-    <a href="{{ url_for('home') }}">🏠 Dashboard</a>
-    <a href="{{ url_for('farm_view') }}">🚜 My Farm</a>
-    {% if user.is_admin %}
-        <a href="{{ url_for('admin_panel') }}">⚙️ Admin Panel</a>
-    {% endif %}
-    <a href="{{ url_for('logout') }}">🚪 Logout</a>
-</div>
-
-<h2>👤 Farmer Profile</h2>
-<p>Your farming journey and achievements</p>
+<h2>👤 {{ _('Farmer Profile') }}</h2>
+<p>{{ _('Your farming journey and achievements') }}</p>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 30px;">
     <!-- Basic Info -->
     <div class="card" style="background-color: #e8f5e8; border-left: 4px solid #4caf50;">
-        <h3>📋 Farmer Information</h3>
+        <h3>📋 {{ _('Farmer Information') }}</h3>
         <div style="margin: 15px 0; display: flex; justify-content: space-between; align-items: center;">
-            <span><strong>🧑‍🌾 Farmer Name:</strong></span>
+            <span><strong>🧑‍🌾 {{ _('Farmer Name') }}:</strong></span>
             <span style="color: #2e7d32; font-weight: bold;">{{ user.username }}
             {% if user.is_admin %}<span style="color: #ff9800; margin-left: 8px;">👑</span>{% endif %}</span>
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>📧 Email:</strong></span>
+            <span><strong>📧 {{ _('Email') }}:</strong></span>
             <span style="color: #666;">{{ user.email }}</span>
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>Status:</strong></span>
+            <span><strong>{{ _('Status') }}:</strong></span>
             {% if user.is_active %}
-                <span style="color: #4caf50; font-weight: bold;">✅ Active</span>
+                <span style="color: #4caf50; font-weight: bold;">✅ {{ _('Active') }}</span>
             {% else %}
-                <span style="color: #f44336; font-weight: bold;">❌ Disabled</span>
+                <span style="color: #f44336; font-weight: bold;">❌ {{ _('Disabled') }}</span>
             {% endif %}
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>🌱 Farming Since:</strong></span>
+            <span><strong>🌱 {{ _('Farming Since') }}:</strong></span>
             <span style="color: #2e7d32;">{{ user.created_at.strftime('%B %d, %Y') }}</span>
         </div>
         {% if user.last_login %}
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>🕒 Last Visit:</strong></span>
+            <span><strong>🕒 {{ _('Last Visit') }}:</strong></span>
             <span style="color: #2e7d32;">{{ user.last_login.strftime('%B %d, %Y at %H:%M') }}</span>
         </div>
         {% endif %}
+        <div style="margin: 15px 0; display: flex; justify-content: space-between; align-items: center;">
+            <span><strong>🌐 {{ _('Language Preference') }}:</strong></span>
+            <form method="POST" style="margin: 0;">
+                <select name="language" onchange="this.form.submit()" style="padding: 4px 8px; border: 1px solid #c8e6c9; border-radius: 4px; background-color: white; color: #2e7d32;">
+                    {% for code, name in get_available_languages().items() %}
+                        <option value="{{ code }}" {% if user.preferred_language == code %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
     </div>
 
     <!-- Farmer Stats -->
     <div class="card" style="background-color: #fff3e0; border-left: 4px solid #ff9800;">
-        <h3>🏆 Farmer Statistics</h3>
+        <h3>🏆 {{ _('Farmer Statistics') }}</h3>
         <div style="margin: 15px 0; display: flex; justify-content: space-between; align-items: center;">
-            <span><strong>Level:</strong></span>
-            <span style="background: #ff9800; color: white; padding: 4px 12px; border-radius: 16px; font-weight: bold;">Lv.{{ user.level }}</span>
+            <span><strong>{{ _('Level') }}:</strong></span>
+            <span style="background: #ff9800; color: white; padding: 4px 12px; border-radius: 16px; font-weight: bold;">{{ _('Lv.%(level)s', level=user.level) }}</span>
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>Experience:</strong></span>
-            <span style="color: #f57c00; font-weight: bold;">{{ "{:,}".format(user.experience) }} XP</span>
+            <span><strong>{{ _('Experience') }}:</strong></span>
+            <span style="color: #f57c00; font-weight: bold;">{{ "{:,}".format(user.experience) }} {{ _('XP') }}</span>
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>Farms Owned:</strong></span>
+            <span><strong>{{ _('Farms Owned') }}:</strong></span>
             <span style="color: #f57c00; font-weight: bold;">{{ user.farms|length }}</span>
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>Farmer Rank:</strong></span>
+            <span><strong>{{ _('Farmer Rank') }}:</strong></span>
             <span style="color: #f57c00; font-weight: bold;">
             {% if user.level >= 10 %}
-                🌟 Master Farmer
+                🌟 {{ _('Master Farmer') }}
             {% elif user.level >= 5 %}
-                ⭐ Expert Farmer
+                ⭐ {{ _('Expert Farmer') }}
             {% elif user.level >= 3 %}
-                🔸 Skilled Farmer
+                🔸 {{ _('Skilled Farmer') }}
             {% else %}
-                🔹 Novice Farmer
+                🔹 {{ _('Novice Farmer') }}
             {% endif %}
             </span>
         </div>
         <div style="margin-top: 20px; padding: 10px; background-color: #fff8e1; border-radius: 4px; border: 1px solid #ffcc02;">
-            <small><strong>Next Level:</strong> {{ user.level * 100 - user.experience }} XP needed</small>
+            <small><strong>{{ _('Next Level') }}:</strong> {{ user.level * 100 - user.experience }} {{ _('XP needed') }}</small>
         </div>
     </div>
 
     <!-- Resources -->
     <div class="card" style="background-color: #e3f2fd; border-left: 4px solid #2196f3;">
-        <h3>💰 Current Resources</h3>
+        <h3>💰 {{ _('Current Resources') }}</h3>
         <div style="margin: 15px 0; display: flex; justify-content: space-between; align-items: center;">
-            <span><strong>🪙 Coins:</strong></span>
+            <span><strong>🪙 {{ _('Coins') }}:</strong></span>
             <span style="color: #1976d2; font-size: 18px; font-weight: bold;">{{ "{:,}".format(user.coins) }}</span>
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>🌾 Wheat:</strong></span>
+            <span><strong>🌾 {{ _('Wheat') }}:</strong></span>
             <span style="color: #1976d2; font-weight: bold;">{{ "{:,}".format(user.wheat) }}</span>
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>🌽 Corn:</strong></span>
+            <span><strong>🌽 {{ _('Corn') }}:</strong></span>
             <span style="color: #1976d2; font-weight: bold;">{{ "{:,}".format(user.corn) }}</span>
         </div>
         <div style="margin: 15px 0; display: flex; justify-content: space-between;">
-            <span><strong>🥕 Carrots:</strong></span>
+            <span><strong>🥕 {{ _('Carrots') }}:</strong></span>
             <span style="color: #1976d2; font-weight: bold;">{{ "{:,}".format(user.carrots) }}</span>
         </div>
         <div style="margin-top: 20px; padding: 10px; background-color: #e1f5fe; border-radius: 4px;">
-            <small><strong>Total Crop Value:</strong> {{ "{:,}".format(user.wheat + user.corn + user.carrots) }} units</small>
+            <small><strong>{{ _('Total Crop Value') }}:</strong> {{ "{:,}".format(user.wheat + user.corn + user.carrots) }} {{ _('units') }}</small>
         </div>
     </div>
 </div>
 
 {% if user.farms %}
 <div class="card" style="margin-top: 30px; background-color: #f3e5f5; border-left: 4px solid #9c27b0;">
-    <h3>🏡 Your Farms</h3>
+    <h3>🏡 {{ _('Your Farms') }}</h3>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
         {% for farm in user.farms %}
         <div style="padding: 15px; background-color: white; border-radius: 8px; border: 1px solid #c8e6c9; box-shadow: 0 2px 4px rgba(76, 175, 80, 0.1);">
             <h4 style="margin: 0 0 10px 0; color: #2e7d32;">🚜 {{ farm.name }}</h4>
             <div style="margin: 8px 0; color: #666;">
-                <strong>Size:</strong> {{ farm.size }} plots
+                <strong>{{ _('Size') }}:</strong> {{ farm.size }} {{ _('plots') }}
             </div>
             <div style="margin: 8px 0; color: #666;">
-                <strong>Established:</strong> {{ farm.created_at.strftime('%Y-%m-%d') }}
+                <strong>{{ _('Established') }}:</strong> {{ farm.created_at.strftime('%Y-%m-%d') }}
             </div>
             <div style="margin-top: 15px;">
-                <a href="{{ url_for('farm_view') }}" style="background: #4caf50; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: bold;">🌱 Manage Farm</a>
+                <a href="{{ url_for('farm_view') }}" style="background: #4caf50; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: bold;">🌱 {{ _('Manage Farm') }}</a>
             </div>
         </div>
         {% endfor %}
@@ -130,40 +133,40 @@
 {% endif %}
 
 <div class="card" style="margin-top: 30px; background-color: #fff8e1; border-left: 4px solid #ffc107;">
-    <h3>🎯 Farming Achievements</h3>
+    <h3>🎯 {{ _('Farming Achievements') }}</h3>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
         <div style="padding: 15px; background-color: #c8e6c9; border-radius: 6px; text-align: center;">
             <div style="font-size: 32px; margin-bottom: 8px;">🏅</div>
-            <strong style="color: #2e7d32;">First Harvest</strong><br>
-            <small style="color: #666;">Started farming</small>
+            <strong style="color: #2e7d32;">{{ _('First Harvest') }}</strong><br>
+            <small style="color: #666;">{{ _('Started farming') }}</small>
         </div>
         <div style="padding: 15px; background-color: {% if user.level >= 3 %}#c8e6c9{% else %}#f5f5f5{% endif %}; border-radius: 6px; text-align: center;">
             <div style="font-size: 32px; margin-bottom: 8px;">🌱</div>
-            <strong style="color: {% if user.level >= 3 %}#2e7d32{% else %}#999{% endif %};">Green Thumb</strong><br>
-            <small style="color: #666;">Reach Level 3</small>
+            <strong style="color: {% if user.level >= 3 %}#2e7d32{% else %}#999{% endif %};">{{ _('Green Thumb') }}</strong><br>
+            <small style="color: #666;">{{ _('Reach Level 3') }}</small>
         </div>
         <div style="padding: 15px; background-color: {% if user.coins >= 5000 %}#c8e6c9{% else %}#f5f5f5{% endif %}; border-radius: 6px; text-align: center;">
             <div style="font-size: 32px; margin-bottom: 8px;">💰</div>
-            <strong style="color: {% if user.coins >= 5000 %}#2e7d32{% else %}#999{% endif %};">Wealthy Farmer</strong><br>
-            <small style="color: #666;">Earn 5,000 coins</small>
+            <strong style="color: {% if user.coins >= 5000 %}#2e7d32{% else %}#999{% endif %};">{{ _('Wealthy Farmer') }}</strong><br>
+            <small style="color: #666;">{{ _('Earn 5,000 coins') }}</small>
         </div>
         <div style="padding: 15px; background-color: {% if user.farms|length > 1 %}#c8e6c9{% else %}#f5f5f5{% endif %}; border-radius: 6px; text-align: center;">
             <div style="font-size: 32px; margin-bottom: 8px;">🏡</div>
-            <strong style="color: {% if user.farms|length > 1 %}#2e7d32{% else %}#999{% endif %};">Farm Expansion</strong><br>
-            <small style="color: #666;">Own multiple farms</small>
+            <strong style="color: {% if user.farms|length > 1 %}#2e7d32{% else %}#999{% endif %};">{{ _('Farm Expansion') }}</strong><br>
+            <small style="color: #666;">{{ _('Own multiple farms') }}</small>
         </div>
     </div>
 </div>
 
 <div class="card" style="margin-top: 30px; background-color: #e8f5e8;">
-    <h4>💡 Farming Tips</h4>
+    <h4>💡 {{ _('Farming Tips') }}</h4>
     <ul style="color: #2e7d32; line-height: 1.8;">
-        <li>🌾 Plant different crops to maximize your profits</li>
-        <li>⏰ Check back regularly to harvest crops when they're ready</li>
-        <li>📈 Higher level crops give more experience and coins</li>
-        <li>💰 Save coins to buy more expensive seeds for better returns</li>
-        <li>🎯 Complete achievements to unlock special rewards</li>
-        <li>🌱 Level up to unlock new crops and farming features</li>
+        <li>🌾 {{ _('Plant different crops to maximize your profits') }}</li>
+        <li>⏰ {{ _('Check back regularly to harvest crops when they\'re ready') }}</li>
+        <li>📈 {{ _('Higher level crops give more experience and coins') }}</li>
+        <li>💰 {{ _('Save coins to buy more expensive seeds for better returns') }}</li>
+        <li>🎯 {{ _('Complete achievements to unlock special rewards') }}</li>
+        <li>🌱 {{ _('Level up to unlock new crops and farming features') }}</li>
     </ul>
 </div>
 {% endblock %}

@@ -1,30 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}Farmer Login - Farm Manager{% endblock %}
+{% block title %}{{ _('Farmer Login') }} - {{ _('Farm Manager') }}{% endblock %}
 
 {% block content %}
-<h2>🌱 Welcome Back, Farmer!</h2>
-<p>Access your farm and tend to your crops</p>
+<h2>🌱 {{ _('Welcome Back, Farmer!') }}</h2>
+<p>{{ _('Access your farm and tend to your crops') }}</p>
 
 <form method="POST">
     <div class="form-group">
-        <label for="username">🧑‍🌾 Farmer Name:</label>
+        <label for="username">🧑‍🌾 {{ _('Farmer Name') }}:</label>
         <input type="text" id="username" name="username" required>
     </div>
     <div class="form-group">
-        <label for="password">🔒 Password:</label>
+        <label for="password">🔒 {{ _('Password') }}:</label>
         <input type="password" id="password" name="password" required>
     </div>
-    <button type="submit">🚜 Enter Farm</button>
+    <button type="submit">🚜 {{ _('Enter Farm') }}</button>
 </form>
 
 <p style="margin-top: 20px;">
-    New to farming? <a href="{{ url_for('register') }}" style="color: #4caf50; font-weight: bold;">Start Your Farm Journey</a>
+    {{ _('New to farming?') }} <a href="{{ url_for('register') }}" style="color: #4caf50; font-weight: bold;">{{ _('Start Your Farm Journey') }}</a>
 </p>
 
 <div class="card" style="margin-top: 30px; background-color: #fff8e1; border-left-color: #ffc107;">
-    <h4>🔑 Default Admin Account:</h4>
-    <p><strong>Username:</strong> admin <strong>Password:</strong> admin123</p>
-    <small style="color: #f57c00;">Change this password after first login!</small>
+    <h4>🔑 {{ _('Default Admin Account') }}:</h4>
+    <p><strong>{{ _('Username') }}:</strong> admin <strong>{{ _('Password') }}:</strong> admin123</p>
+    <small style="color: #f57c00;">{{ _('Change this password after first login!') }}</small>
 </div>
 {% endblock %}

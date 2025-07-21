@@ -1,64 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}Farm Dashboard - Farm Manager{% endblock %}
+{% block title %}{{ _('Farm Dashboard') }} - {{ _('Farm Manager') }}{% endblock %}
 
 {% block content %}
-<div class="nav">
-    <a href="{{ url_for('farm_view') }}">🚜 My Farm</a>
-    <a href="{{ url_for('profile') }}">👤 Profile</a>
-    {% if user.is_admin %}
-        <a href="{{ url_for('admin_panel') }}">⚙️ Admin Panel</a>
-    {% endif %}
-    <a href="{{ url_for('logout') }}">🚪 Logout</a>
-</div>
-
-<h2>🌻 Welcome back, Farmer {{ user.username }}!</h2>
-<p>Your farm is ready for another productive day.</p>
+<h2>🌻 {{ _('Welcome back, Farmer %(username)s!', username=user.username) }}</h2>
+<p>{{ _('Your farm is ready for another productive day.') }}</p>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px;">
     <!-- Resources Panel -->
     <div class="card" style="background-color: #e8f5e8; border-left: 4px solid #4caf50;">
-        <h3>💰 Farm Resources</h3>
+        <h3>💰 {{ _('Farm Resources') }}</h3>
         <div style="margin: 12px 0; display: flex; justify-content: space-between; align-items: center;">
-            <span><strong>🪙 Coins:</strong></span>
+            <span><strong>🪙 {{ _('Coins') }}:</strong></span>
             <span style="font-size: 18px; font-weight: bold; color: #2e7d32;">{{ "{:,}".format(user.coins) }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>🌾 Wheat:</strong></span>
+            <span><strong>🌾 {{ _('Wheat') }}:</strong></span>
             <span style="color: #2e7d32;">{{ "{:,}".format(user.wheat) }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>🌽 Corn:</strong></span>
+            <span><strong>🌽 {{ _('Corn') }}:</strong></span>
             <span style="color: #2e7d32;">{{ "{:,}".format(user.corn) }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>🥕 Carrots:</strong></span>
+            <span><strong>🥕 {{ _('Carrots') }}:</strong></span>
             <span style="color: #2e7d32;">{{ "{:,}".format(user.carrots) }}</span>
         </div>
     </div>
 
     <!-- Farmer Stats -->
     <div class="card" style="background-color: #fff3e0; border-left: 4px solid #ff9800;">
-        <h3>🏆 Farmer Stats</h3>
+        <h3>🏆 {{ _('Farmer Stats') }}</h3>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Level:</strong></span>
+            <span><strong>{{ _('Level') }}:</strong></span>
             <span style="font-size: 18px; font-weight: bold; color: #f57c00;">{{ user.level }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Experience:</strong></span>
+            <span><strong>{{ _('Experience') }}:</strong></span>
             <span style="color: #f57c00;">{{ "{:,}".format(user.experience) }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Farms:</strong></span>
+            <span><strong>{{ _('Farms') }}:</strong></span>
             <span style="color: #f57c00;">{{ user.farms|length }}</span>
         </div>
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Farming Since:</strong></span>
+            <span><strong>{{ _('Farming Since') }}:</strong></span>
             <span style="color: #f57c00;">{{ user.created_at.strftime('%Y-%m-%d') }}</span>
         </div>
         {% if user.last_login %}
         <div style="margin: 12px 0; display: flex; justify-content: space-between;">
-            <span><strong>Last Visit:</strong></span>
+            <span><strong>{{ _('Last Visit') }}:</strong></span>
             <span style="color: #f57c00;">{{ user.last_login.strftime('%m-%d %H:%M') }}</span>
         </div>
         {% endif %}
@@ -66,34 +57,34 @@
 
     <!-- Quick Actions -->
     <div class="card" style="background-color: #e3f2fd; border-left: 4px solid #2196f3;">
-        <h3>⚡ Quick Actions</h3>
+        <h3>⚡ {{ _('Quick Actions') }}</h3>
         <div style="margin: 15px 0;">
-            <a href="{{ url_for('farm_view') }}" style="color: #1976d2; text-decoration: none; font-weight: 500;">🚜 Manage Farm</a>
+            <a href="{{ url_for('farm_view') }}" style="color: #1976d2; text-decoration: none; font-weight: 500;">🚜 {{ _('Manage Farm') }}</a>
         </div>
         <div style="margin: 15px 0;">
-            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">🛒 Buy Seeds</a>
+            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">🛒 {{ _('Buy Seeds') }}</a>
         </div>
         <div style="margin: 15px 0;">
-            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">📊 View Statistics</a>
+            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">📊 {{ _('View Statistics') }}</a>
         </div>
         <div style="margin: 15px 0;">
-            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">🏪 Market</a>
+            <a href="#" style="color: #1976d2; text-decoration: none; font-weight: 500;">🏪 {{ _('Market') }}</a>
         </div>
     </div>
 </div>
 
 {% if user.farms %}
 <div class="card" style="margin-top: 30px; background-color: #f3e5f5;">
-    <h3>🏡 Your Farms</h3>
+    <h3>🏡 {{ _('Your Farms') }}</h3>
     {% for farm in user.farms %}
     <div style="margin: 15px 0; padding: 15px; background-color: white; border-radius: 6px; border: 1px solid #c8e6c9;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <strong style="color: #2e7d32;">{{ farm.name }}</strong>
-                <div style="color: #666; font-size: 14px;">{{ farm.size }} plots available</div>
-                <small style="color: #999;">Established: {{ farm.created_at.strftime('%Y-%m-%d') }}</small>
+                <div style="color: #666; font-size: 14px;">{{ _('%(size)s plots available', size=farm.size) }}</div>
+                <small style="color: #999;">{{ _('Established') }}: {{ farm.created_at.strftime('%Y-%m-%d') }}</small>
             </div>
-            <a href="{{ url_for('farm_view') }}" style="background: #4caf50; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px;">Manage</a>
+            <a href="{{ url_for('farm_view') }}" style="background: #4caf50; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px;">{{ _('Manage') }}</a>
         </div>
     </div>
     {% endfor %}
@@ -101,13 +92,13 @@
 {% endif %}
 
 <div class="card" style="margin-top: 30px; background-color: #e8f5e8;">
-    <h4>📢 Farm News & Tips</h4>
+    <h4>📢 {{ _('Farm News & Tips') }}</h4>
     <ul style="color: #2e7d32; line-height: 1.6;">
-        <li>🌱 Welcome to Farm Manager! Start by planting your first crops.</li>
-        <li>💡 Different crops have different growth times and profits.</li>
-        <li>📈 Gain experience by harvesting crops to level up your farmer.</li>
-        <li>🌧️ Check back regularly to harvest your crops when they're ready!</li>
-        <li>💰 Sell your harvest for coins to buy more seeds and expand your farm.</li>
+        <li>🌱 {{ _('Welcome to Farm Manager! Start by planting your first crops.') }}</li>
+        <li>💡 {{ _('Different crops have different growth times and profits.') }}</li>
+        <li>📈 {{ _('Gain experience by harvesting crops to level up your farmer.') }}</li>
+        <li>🌧️ {{ _('Check back regularly to harvest your crops when they\'re ready!') }}</li>
+        <li>💰 {{ _('Sell your harvest for coins to buy more seeds and expand your farm.') }}</li>
     </ul>
 </div>
 {% endblock %}

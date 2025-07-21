@@ -1,40 +1,41 @@
 {% extends "base.html" %}
 
-{% block title %}Start Your Farm - Farm Manager{% endblock %}
+{% block title %}{{ _('Start Your Farm') }} - {{ _('Farm Manager') }}{% endblock %}
 
 {% block content %}
-<h2>🌾 Start Your Farming Journey</h2>
-<p>Create your account and begin cultivating your dream farm!</p>
+<h2>🌾 {{ _('Start Your Farming Journey') }}</h2>
+<p>{{ _('Create your account and begin cultivating your dream farm!') }}</p>
 
 <form method="POST">
     <div class="form-group">
-        <label for="username">🧑‍🌾 Farmer Name:</label>
+        <label for="username">🧑‍🌾 {{ _('Farmer Name') }}:</label>
         <input type="text" id="username" name="username" required minlength="3" maxlength="20">
     </div>
     <div class="form-group">
-        <label for="email">📧 Email:</label>
+        <label for="email">📧 {{ _('Email') }}:</label>
         <input type="email" id="email" name="email" required>
     </div>
     <div class="form-group">
-        <label for="password">🔒 Password:</label>
+        <label for="password">🔒 {{ _('Password') }}:</label>
         <input type="password" id="password" name="password" required minlength="6">
     </div>
-    <button type="submit">🌱 Start Farming</button>
+    <button type="submit">🌱 {{ _('Start Farming') }}</button>
 </form>
 
 <p style="margin-top: 20px;">
-    Already have a farm? <a href="{{ url_for('login') }}" style="color: #4caf50; font-weight: bold;">Login here</a>
+    {{ _('Already have a farm?') }} <a href="{{ url_for('login') }}" style="color: #4caf50; font-weight: bold;">{{
+        _('Login here') }}</a>
 </p>
 
 <div class="card" style="margin-top: 30px; background-color: #e8f5e8;">
-    <h4>🎁 Starter Package:</h4>
+    <h4>🎁 {{ _('Starter Package') }}:</h4>
     <ul style="color: #2e7d32;">
-        <li>💰 Starting coins: 1,000</li>
-        <li>🌾 Wheat seeds: 50</li>
-        <li>🌽 Corn seeds: 30</li>
-        <li>🥕 Carrot seeds: 20</li>
-        <li>🏡 Your own 6-plot farm</li>
-        <li>📈 Level 1 farmer status</li>
+        <li>💰 {{ _('Starting coins') }}: 1,000</li>
+        <li>🌾 {{ _('Wheat seeds') }}: 50</li>
+        <li>🌽 {{ _('Corn seeds') }}: 30</li>
+        <li>🥕 {{ _('Carrot seeds') }}: 20</li>
+        <li>🏡 {{ _('Your own 6-plot farm') }}</li>
+        <li>📈 {{ _('Level 1 farmer status') }}</li>
     </ul>
 </div>
 {% endblock %}

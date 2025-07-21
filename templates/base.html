@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ get_locale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Farm Manager{% endblock %}</title>
+    <title>{% block title %}{{ _('Farm Manager') }}{% endblock %}</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -111,6 +111,39 @@
             border: 1px solid #e8f5e8;
             margin-bottom: 20px;
         }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .language-selector {
+            margin-left: 20px;
+        }
+        .language-selector select {
+            padding: 6px 10px;
+            border: 2px solid #a5d6a7;
+            border-radius: 4px;
+            background-color: white;
+            color: #2e7d32;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .language-selector select:focus {
+            border-color: #4caf50;
+            outline: none;
+        }
+        .language-selector label {
+            margin-right: 8px;
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #2e7d32;
+        }
     </style>
 </head>
 <body>
@@ -123,7 +156,45 @@
             {% endif %}
         {% endwith %}
         
+        {% set current_user = get_current_user() %}
+        <div class="nav">
+            <div class="nav-container">
+                <div class="nav-links">
+                    {% if current_user %}
+                        <a href="{{ url_for('home') }}">🏠 {{ _('Dashboard') }}</a>
+                        <a href="{{ url_for('farm_view') }}">🚜 {{ _('My Farm') }}</a>
+                        <a href="{{ url_for('profile') }}">👤 {{ _('Profile') }}</a>
+                        {% if current_user.is_admin %}
+                            <a href="{{ url_for('admin_panel') }}">⚙️ {{ _('Admin Panel') }}</a>
+                        {% endif %}
+                        <a href="{{ url_for('logout') }}">🚪 {{ _('Logout') }}</a>
+                    {% else %}
+                        <a href="{{ url_for('home') }}">🏠 {{ _('Home') }}</a>
+                        <a href="{{ url_for('login') }}">🚪 {{ _('Login') }}</a>
+                        <a href="{{ url_for('register') }}">🌱 {{ _('Register') }}</a>
+                    {% endif %}
+                </div>
+                <div class="language-selector">
+                    <label for="language-select">🌐 {{ _('Language') }}:</label>
+                    <select id="language-select" onchange="changeLanguage(this.value)">
+                        {% for code, name in get_available_languages().items() %}
+                            <option value="{{ code }}" {% if get_current_language() == code %}selected{% endif %}>
+                                {{ name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        
         {% block content %}{% endblock %}
     </div>
+    
+    <script>
+        function changeLanguage(languageCode) {
+            // Navigate to the set_language route with the selected language
+            window.location.href = '/set_language/' + languageCode;
+        }
+    </script>
 </body>
 </html>

@@ -12,6 +12,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_login = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean, default=True)
+    preferred_language = db.Column(db.String(5), default='en')
     
     # Farm resources
     coins = db.Column(db.Integer, default=1000)

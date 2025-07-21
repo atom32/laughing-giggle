@@ -1,4 +1,5 @@
 from flask import session, redirect, url_for, flash
+from flask_babel import gettext as _
 from functools import wraps
 from models import User
 
@@ -17,7 +18,7 @@ def admin_required(f):
             return redirect(url_for('login'))
         user = User.query.get(session['user_id'])
         if not user or not user.is_admin:
-            flash('Admin access required!', 'error')
+            flash(_('Admin access required!'), 'error')
             return redirect(url_for('home'))
         return f(*args, **kwargs)
     return decorated_function
@@ -35,23 +36,50 @@ def init_database(app, db):
         # Import here to avoid circular imports
         from models import User, Crop
         from werkzeug.security import generate_password_hash
+        import logging
+        
+        logger = logging.getLogger(__name__)
+        
+        # Get configuration instance
+        config = app.config.get('APP_CONFIG')
         
         # Create default admin if doesn't exist
-        admin = User.query.filter_by(username='admin').first()
+        admin_username = config.get('default_admin_username', 'admin') if config else 'admin'
+        admin = User.query.filter_by(username=admin_username).first()
+        
         if not admin:
+            if config:
+                # Use configuration values
+                admin_email = config.get('default_admin_email', 'admin@farm.local')
+                admin_password = config.get('default_admin_password', 'admin123')
+                admin_coins = config.get('default_admin_coins', 50000, int)
+                admin_resources = config.get('default_admin_resources', 1000, int)
+                admin_level = config.get('default_admin_level', 10, int)
+                admin_experience = config.get('default_admin_experience', 1000, int)
+            else:
+                # Fallback to hardcoded values
+                admin_email = 'admin@farm.local'
+                admin_password = 'admin123'
+                admin_coins = 50000
+                admin_resources = 1000
+                admin_level = 10
+                admin_experience = 1000
+            
             admin = User(
-                username='admin',
-                email='admin@farm.local',
-                password_hash=generate_password_hash('admin123'),
+                username=admin_username,
+                email=admin_email,
+                password_hash=generate_password_hash(admin_password),
                 is_admin=True,
-                coins=50000,
-                wheat=1000,
-                corn=1000,
-                carrots=1000,
-                level=10,
-                experience=1000
+                coins=admin_coins,
+                wheat=admin_resources,
+                corn=admin_resources,
+                carrots=admin_resources,
+                level=admin_level,
+                experience=admin_experience,
+                preferred_language='en'
             )
             db.session.add(admin)
+            logger.info(f"Created default admin user: {admin_username}")
         
         # Create default crops if they don't exist
         if not Crop.query.first():
@@ -64,5 +92,12 @@ def init_database(app, db):
             ]
             for crop in crops:
                 db.session.add(crop)
+            logger.info("Created default crop data")
         
-        db.session.commit()
+        try:
+            db.session.commit()
+            logger.info("Database initialization completed successfully")
+        except Exception as e:
+            logger.error(f"Database initialization failed: {e}")
+            db.session.rollback()
+            raise

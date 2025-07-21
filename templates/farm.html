@@ -1,38 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}My Farm - Farm Manager{% endblock %}
+{% block title %}{{ _('My Farm') }} - {{ _('Farm Manager') }}{% endblock %}
 
 {% block content %}
-<div class="nav">
-    <a href="{{ url_for('home') }}">🏠 Dashboard</a>
-    <a href="{{ url_for('profile') }}">👤 Profile</a>
-    {% if user.is_admin %}
-        <a href="{{ url_for('admin_panel') }}">⚙️ Admin Panel</a>
-    {% endif %}
-    <a href="{{ url_for('logout') }}">🚪 Logout</a>
-</div>
-
-<h2>🚜 {{ farm.name if farm else "Your Farm" }}</h2>
-<p>Manage your crops and grow your farming empire</p>
+<h2>🚜 {{ farm.name if farm else _('Your Farm') }}</h2>
+<p>{{ _('Manage your crops and grow your farming empire') }}</p>
 
 <!-- Farm Stats Header -->
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
     <div class="card" style="background-color: #e8f5e8; border-left: 4px solid #4caf50; padding: 15px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span><strong>🪙 Coins:</strong></span>
+            <span><strong>🪙 {{ _('Coins') }}:</strong></span>
             <span style="font-size: 18px; font-weight: bold; color: #2e7d32;">{{ "{:,}".format(user.coins) }}</span>
         </div>
     </div>
     <div class="card" style="background-color: #fff3e0; border-left: 4px solid #ff9800; padding: 15px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span><strong>Level:</strong></span>
-            <span style="background: #ff9800; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold;">Lv.{{ user.level }}</span>
+            <span><strong>{{ _('Level') }}:</strong></span>
+            <span style="background: #ff9800; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold;">{{ _('Lv.%(level)s', level=user.level) }}</span>
         </div>
     </div>
     <div class="card" style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span><strong>Experience:</strong></span>
-            <span style="color: #1976d2; font-weight: bold;">{{ "{:,}".format(user.experience) }} XP</span>
+            <span><strong>{{ _('Experience') }}:</strong></span>
+            <span style="color: #1976d2; font-weight: bold;">{{ "{:,}".format(user.experience) }} {{ _('XP') }}</span>
         </div>
     </div>
 </div>
@@ -40,7 +31,7 @@
 {% if farm %}
 <!-- Farm Grid -->
 <div class="card" style="margin: 30px 0; background-color: #f8fdf8;">
-    <h3>🌱 Farm Plots ({{ farm.size }} plots available)</h3>
+    <h3>🌱 {{ _('Farm Plots (%(size)s plots available)', size=farm.size) }}</h3>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px;">
         {% for plot in farm.plots %}
         <div style="background: white; border: 2px solid #c8e6c9; border-radius: 8px; padding: 15px; text-align: center; min-height: 120px; display: flex; flex-direction: column; justify-content: space-between;">
@@ -59,15 +50,15 @@
                     {% endif %}
                 </div>
                 {% if plot.crop_id %}
-                    <div style="font-weight: bold; color: #2e7d32; margin-bottom: 5px;">{{ plot.crop.name }}</div>
+                    <div style="font-weight: bold; color: #2e7d32; margin-bottom: 5px;">{{ _(plot.crop.name) }}</div>
                     {% if plot.is_ready %}
-                        <div style="color: #4caf50; font-weight: bold; font-size: 12px;">✅ Ready!</div>
+                        <div style="color: #4caf50; font-weight: bold; font-size: 12px;">✅ {{ _('Ready!') }}</div>
                     {% else %}
-                        <div style="color: #ff9800; font-size: 12px;">🕒 Growing...</div>
-                        <div style="color: #666; font-size: 11px;">{{ plot.crop.growth_time }}min</div>
+                        <div style="color: #ff9800; font-size: 12px;">🕒 {{ _('Growing...') }}</div>
+                        <div style="color: #666; font-size: 11px;">{{ plot.crop.growth_time }}{{ _('min') }}</div>
                     {% endif %}
                 {% else %}
-                    <div style="color: #999; font-size: 14px;">Empty Plot</div>
+                    <div style="color: #999; font-size: 14px;">{{ _('Empty Plot') }}</div>
                 {% endif %}
             </div>
             
@@ -75,15 +66,15 @@
                 {% if plot.crop_id and plot.is_ready %}
                     <a href="{{ url_for('harvest_crop', plot_id=plot.id) }}" 
                        style="background: #4caf50; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                        🌾 Harvest
+                        🌾 {{ _('Harvest') }}
                     </a>
                 {% elif not plot.crop_id %}
                     <div style="font-size: 12px;">
-                        <div style="margin-bottom: 5px; color: #666;">Plant:</div>
+                        <div style="margin-bottom: 5px; color: #666;">{{ _('Plant') }}:</div>
                         {% for crop in crops[:3] %}
                         <a href="{{ url_for('plant_crop', plot_id=plot.id, crop_id=crop.id) }}" 
                            style="display: inline-block; background: #2196f3; color: white; padding: 3px 6px; text-decoration: none; border-radius: 3px; font-size: 10px; margin: 1px;">
-                            {{ crop.name[:4] }}
+                            {{ _(crop.name[:4]) }}
                         </a>
                         {% endfor %}
                     </div>
@@ -96,7 +87,7 @@
 
 <!-- Available Crops -->
 <div class="card" style="margin: 30px 0; background-color: #fff8e1;">
-    <h3>🛒 Available Crops</h3>
+    <h3>🛒 {{ _('Available Crops') }}</h3>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
         {% for crop in crops %}
         <div style="background: white; border: 1px solid #ffcc02; border-radius: 8px; padding: 15px;">
@@ -111,32 +102,32 @@
                         {% else %}🌱
                         {% endif %}
                     </div>
-                    <strong style="color: #2e7d32;">{{ crop.name }}</strong>
+                    <strong style="color: #2e7d32;">{{ _(crop.name) }}</strong>
                 </div>
                 <div style="text-align: right; font-size: 12px;">
-                    <div style="color: #f57c00;"><strong>+{{ crop.experience_gain }} XP</strong></div>
+                    <div style="color: #f57c00;"><strong>+{{ crop.experience_gain }} {{ _('XP') }}</strong></div>
                 </div>
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; margin-bottom: 15px;">
                 <div>
-                    <div style="color: #666;">💰 Buy: <strong style="color: #f44336;">{{ crop.buy_price }}</strong></div>
-                    <div style="color: #666;">💵 Sell: <strong style="color: #4caf50;">{{ crop.sell_price }}</strong></div>
+                    <div style="color: #666;">💰 {{ _('Buy') }}: <strong style="color: #f44336;">{{ crop.buy_price }}</strong></div>
+                    <div style="color: #666;">💵 {{ _('Sell') }}: <strong style="color: #4caf50;">{{ crop.sell_price }}</strong></div>
                 </div>
                 <div>
-                    <div style="color: #666;">⏰ Time: <strong>{{ crop.growth_time }}min</strong></div>
-                    <div style="color: #666;">📈 Profit: <strong style="color: #2196f3;">{{ crop.sell_price - crop.buy_price }}</strong></div>
+                    <div style="color: #666;">⏰ {{ _('Time') }}: <strong>{{ crop.growth_time }}{{ _('min') }}</strong></div>
+                    <div style="color: #666;">📈 {{ _('Profit') }}: <strong style="color: #2196f3;">{{ crop.sell_price - crop.buy_price }}</strong></div>
                 </div>
             </div>
             
             <div style="text-align: center;">
                 {% if user.coins >= crop.buy_price %}
                     <span style="background: #4caf50; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                        ✅ Affordable
+                        ✅ {{ _('Affordable') }}
                     </span>
                 {% else %}
                     <span style="background: #f44336; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold;">
-                        ❌ Need {{ crop.buy_price - user.coins }} more coins
+                        ❌ {{ _('Need %(coins)s more coins', coins=crop.buy_price - user.coins) }}
                     </span>
                 {% endif %}
             </div>
@@ -147,38 +138,38 @@
 
 {% else %}
 <div class="card" style="margin: 30px 0; background-color: #ffebee; border-left: 4px solid #f44336;">
-    <h3>❌ No Farm Found</h3>
-    <p>It looks like you don't have a farm yet. This shouldn't happen for registered users.</p>
-    <p>Please contact an administrator for assistance.</p>
+    <h3>❌ {{ _('No Farm Found') }}</h3>
+    <p>{{ _('It looks like you don\'t have a farm yet. This shouldn\'t happen for registered users.') }}</p>
+    <p>{{ _('Please contact an administrator for assistance.') }}</p>
 </div>
 {% endif %}
 
 <!-- Farming Tips -->
 <div class="card" style="margin: 30px 0; background-color: #e8f5e8;">
-    <h4>💡 Farming Tips</h4>
+    <h4>💡 {{ _('Farming Tips') }}</h4>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
         <div>
-            <h5 style="color: #2e7d32; margin: 0 0 8px 0;">🌱 Getting Started</h5>
+            <h5 style="color: #2e7d32; margin: 0 0 8px 0;">🌱 {{ _('Getting Started') }}</h5>
             <ul style="font-size: 14px; color: #666; margin: 0; padding-left: 20px;">
-                <li>Start with wheat - it's cheap and grows fast</li>
-                <li>Click on empty plots to plant crops</li>
-                <li>Come back when crops are ready to harvest</li>
+                <li>{{ _('Start with wheat - it\'s cheap and grows fast') }}</li>
+                <li>{{ _('Click on empty plots to plant crops') }}</li>
+                <li>{{ _('Come back when crops are ready to harvest') }}</li>
             </ul>
         </div>
         <div>
-            <h5 style="color: #2e7d32; margin: 0 0 8px 0;">💰 Making Profit</h5>
+            <h5 style="color: #2e7d32; margin: 0 0 8px 0;">💰 {{ _('Making Profit') }}</h5>
             <ul style="font-size: 14px; color: #666; margin: 0; padding-left: 20px;">
-                <li>Higher-priced crops give better profits</li>
-                <li>But they also take longer to grow</li>
-                <li>Balance quick crops with profitable ones</li>
+                <li>{{ _('Higher-priced crops give better profits') }}</li>
+                <li>{{ _('But they also take longer to grow') }}</li>
+                <li>{{ _('Balance quick crops with profitable ones') }}</li>
             </ul>
         </div>
         <div>
-            <h5 style="color: #2e7d32; margin: 0 0 8px 0;">📈 Leveling Up</h5>
+            <h5 style="color: #2e7d32; margin: 0 0 8px 0;">📈 {{ _('Leveling Up') }}</h5>
             <ul style="font-size: 14px; color: #666; margin: 0; padding-left: 20px;">
-                <li>Harvest crops to gain experience</li>
-                <li>Higher level crops give more XP</li>
-                <li>Level up to unlock new features</li>
+                <li>{{ _('Harvest crops to gain experience') }}</li>
+                <li>{{ _('Higher level crops give more XP') }}</li>
+                <li>{{ _('Level up to unlock new features') }}</li>
             </ul>
         </div>
     </div>
