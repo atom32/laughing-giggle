@@ -18,7 +18,8 @@ babel = Babel()
 # Supported languages configuration
 SUPPORTED_LANGUAGES = {
     'en': 'English',
-    'es': 'Español'
+    'es': 'Español',
+    'fr': 'Français'
 }
 
 DEFAULT_LANGUAGE = 'en'
@@ -32,16 +33,13 @@ def init_babel(app):
         app: Flask application instance
     """
     try:
-        # Initialize Babel with the app
-        babel.init_app(app)
-        
         # Configure Babel settings
         app.config['LANGUAGES'] = SUPPORTED_LANGUAGES
         app.config['BABEL_DEFAULT_LOCALE'] = DEFAULT_LANGUAGE
         app.config['BABEL_DEFAULT_TIMEZONE'] = 'UTC'
         
-        # For Flask-Babel 3.x, locale selection is handled automatically
-        # We'll use session-based language selection which is already implemented
+        # Initialize Babel with the app and locale selector (Flask-Babel 3.1.0+ syntax)
+        babel.init_app(app, locale_selector=get_locale_selector)
         
         logger.info(f"Flask-Babel initialized with languages: {list(SUPPORTED_LANGUAGES.keys())}")
         logger.info(f"Default language set to: {DEFAULT_LANGUAGE}")
@@ -131,10 +129,11 @@ def detect_browser_language():
         
         # Check for language variants (e.g., 'en-US' -> 'en')
         for lang_range in accept_languages:
-            base_lang = lang_range[0].split('-')[0].lower()
-            if base_lang in SUPPORTED_LANGUAGES:
-                logger.debug(f"Browser language variant detected: {base_lang}")
-                return base_lang
+            if lang_range[0] and '-' in lang_range[0]:
+                base_lang = lang_range[0].split('-')[0].lower()
+                if base_lang in SUPPORTED_LANGUAGES:
+                    logger.debug(f"Browser language variant detected: {base_lang}")
+                    return base_lang
         
         return None
         
