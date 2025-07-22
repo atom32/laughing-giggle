@@ -22,7 +22,8 @@ def create_app(environment=None, config_file=None):
         Configured Flask application instance
     """
     app = Flask(__name__)
-    
+    #print("Using database URI:", app.config["SQLALCHEMY_DATABASE_URI"])
+
     try:
         # Initialize configuration system
         config_path = config_file or 'config/settings.ini'

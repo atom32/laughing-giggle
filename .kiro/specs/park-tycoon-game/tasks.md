@@ -84,7 +84,8 @@
 - [-] 4. Implement core data models
 
 
-  - [-] 4.1 Create Player model and character creation system
+  - [x] 4.1 Create Player model and character creation system
+
 
     - Design Player model with character attributes and game state
     - Implement character creation logic with starting attribute calculations
@@ -92,7 +93,11 @@
     - Write unit tests for player model and character creation
     - _Requirements: 2.2, 2.3, 3.2_
 
-  - [ ] 4.2 Build comprehensive Livestock model
+  - [x] 4.2 Build comprehensive Livestock model
+
+
+
+
     - Create Livestock model with all specified attributes and relationships
     - Implement UUID-based unique identification system
     - Design flexible custom_data field for extensibility
@@ -100,6 +105,10 @@
     - _Requirements: 6.1, 6.4, 9.4_
 
   - [ ] 4.3 Create Module and Item models
+
+
+
+
     - Implement PlayerModule model for tracking module levels
     - Create Item model for processed goods and resources
     - Design relationships between livestock, modules, and items
